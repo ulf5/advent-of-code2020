@@ -31,7 +31,12 @@ impl From<Vec<String>> for Passport {
             .join(" ")
             .split_whitespace()
             .into_iter()
-            .map(|e| e.splitn(2, ':').map(|s| s.to_string()).collect_tuple::<(String, String)>().unwrap())
+            .map(|e| {
+                e.splitn(2, ':')
+                    .map(|s| s.to_string())
+                    .collect_tuple::<(String, String)>()
+                    .unwrap()
+            })
             .collect();
         Self {
             byr: m.remove("byr"),
@@ -41,7 +46,7 @@ impl From<Vec<String>> for Passport {
             hcl: m.remove("hcl"),
             ecl: m.remove("ecl"),
             pid: m.remove("pid"),
-            cid: m.remove("cid")
+            cid: m.remove("cid"),
         }
     }
 }

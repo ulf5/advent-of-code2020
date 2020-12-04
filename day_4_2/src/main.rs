@@ -1,8 +1,8 @@
 use itertools::Itertools;
+use lazy_static::lazy_static;
 use regex::Regex;
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
-use lazy_static::lazy_static;
 
 lazy_static! {
     static ref HCL_REGEX: Regex = Regex::new("^#[0-9a-f]{6}$").unwrap();
@@ -25,15 +25,23 @@ impl Passport {
             && self.iyr.map_or(false, |iyr| iyr >= 2010 && iyr <= 2020)
             && self.eyr.map_or(false, |eyr| eyr >= 2020 && eyr <= 2030)
             && self.hgt.as_ref().map_or(false, |hgt| _val_hgt(&hgt))
-            && self.hcl.as_ref().map_or(false, |hcl| HCL_REGEX.is_match(&hcl))
-            && self.ecl.as_ref().map_or(false, |ecl| ECL_REGEX.is_match(&ecl))
-            && self.pid.as_ref().map_or(false, |pid| PID_REGEX.is_match(&pid))
+            && self
+                .hcl
+                .as_ref()
+                .map_or(false, |hcl| HCL_REGEX.is_match(&hcl))
+            && self
+                .ecl
+                .as_ref()
+                .map_or(false, |ecl| ECL_REGEX.is_match(&ecl))
+            && self
+                .pid
+                .as_ref()
+                .map_or(false, |pid| PID_REGEX.is_match(&pid))
     }
-
 }
 fn _val_hgt(hgt: &String) -> bool {
     let len = hgt.len();
-    match &hgt[len-2..] {
+    match &hgt[len - 2..] {
         "cm" => {
             if len != 5 {
                 false
@@ -41,7 +49,7 @@ fn _val_hgt(hgt: &String) -> bool {
                 let num: Option<u64> = hgt[..3].parse().ok();
                 num.map_or(false, |n| n >= 150 && n <= 193)
             }
-        },
+        }
         "in" => {
             if len != 4 {
                 false
@@ -49,8 +57,8 @@ fn _val_hgt(hgt: &String) -> bool {
                 let num: Option<u64> = hgt[..2].parse().ok();
                 num.map_or(false, |n| n >= 59 && n <= 76)
             }
-        },
-        _ => false
+        }
+        _ => false,
     }
 }
 
@@ -60,7 +68,12 @@ impl From<Vec<String>> for Passport {
             .join(" ")
             .split_whitespace()
             .into_iter()
-            .map(|e| e.splitn(2, ':').map(|s| s.to_string()).collect_tuple::<(String, String)>().unwrap())
+            .map(|e| {
+                e.splitn(2, ':')
+                    .map(|s| s.to_string())
+                    .collect_tuple::<(String, String)>()
+                    .unwrap()
+            })
             .collect();
         Self {
             byr: m.remove("byr").and_then(|v| v.parse().ok()),
