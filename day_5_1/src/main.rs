@@ -1,7 +1,6 @@
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 
-
 #[derive(Debug)]
 struct BoardingPass {
     row: u64,
