@@ -33,15 +33,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             chunk.push(person);
         }
     }
-    let c: BitVec = chunk
-        .into_iter()
-        .fold_first(|mut a, b| {
-            a.and(&b);
-            a
-        })
-        .unwrap();
-    let p = c.iter().filter(|x| *x).count();
-    all.push(p);
     dbg!(all.iter().sum::<usize>());
     Ok(())
 }

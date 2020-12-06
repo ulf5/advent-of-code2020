@@ -17,7 +17,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             chunk.push(line)
         }
     }
-    all.push(chunk.iter().flat_map(|x| x.chars()).collect());
     dbg!(all.iter().map(|x| x.len()).sum::<usize>());
     Ok(())
 }
