@@ -21,32 +21,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         for c in CONTAINS_REGEX.captures_iter(cap.name("contains").unwrap().as_str()) {
             let color_name = c.name("color").unwrap().as_str();
-            let c_set = inverted_index.entry(color_name.to_string()).or_insert(HashSet::new());
+            let c_set = inverted_index
+                .entry(color_name.to_string())
+                .or_insert(HashSet::new());
             c_set.insert(color.to_string());
-
         }
     }
 
     let mut h: HashSet<String> = HashSet::new();
     for c in inverted_index.get("shiny gold").unwrap().clone() {
-        rec_search(& mut h, &mut inverted_index, &c);
+        rec_search(&mut h, &mut inverted_index, &c);
     }
     dbg!(h.len());
     Ok(())
 }
 
 fn rec_search(h: &mut HashSet<String>, search: &mut HashMap<String, HashSet<String>>, c: &str) {
-        h.insert(c.to_string());
-        let mut to_search = HashSet::new();
-        if let Some(ci) = search.get_mut(c) {
-            for i in ci.iter() {
-                if !h.contains(i) {
-                    to_search.insert(i.to_string());
-                }
+    h.insert(c.to_string());
+    let mut to_search = HashSet::new();
+    if let Some(ci) = search.get_mut(c) {
+        for i in ci.iter() {
+            if !h.contains(i) {
+                to_search.insert(i.to_string());
             }
         }
+    }
 
-        for i in to_search.iter() {
-            rec_search(h, search, i);
-        }
+    for i in to_search.iter() {
+        rec_search(h, search, i);
+    }
 }
