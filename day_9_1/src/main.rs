@@ -26,7 +26,7 @@ fn xmas_run(lines: Vec<u64>, prel: usize) -> u64 {
 
 fn find(sl: &[u64], target: u64) -> bool {
     sl.iter()
-        .cartesian_product(sl)
+        .tuple_combinations()
         .map(|(x, y)| x + y)
         .find(|x| *x == target)
         .is_some()
