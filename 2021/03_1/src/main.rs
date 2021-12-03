@@ -6,13 +6,11 @@ fn main() {
 
     let pos_cnt: BTreeMap<(usize, bool), u32> = lines
         .map(|l| {
-            l.chars()
-                .map(|c| c.to_digit(2).unwrap() == 1)
-                .collect::<Vec<bool>>()
+            u32::from_str_radix(l, 2).unwrap()
         })
         .fold(BTreeMap::new(), |mut acc, elem| {
-            elem.iter().rev().enumerate().for_each(|(x, &v)| {
-                let cnt = acc.entry((x, v)).or_insert(0);
+            (0..length).for_each(|x| {
+                let cnt = acc.entry((x, elem & 1 << x != 0)).or_insert(0);
                 *cnt += 1;
             });
             acc
