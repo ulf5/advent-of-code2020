@@ -31,11 +31,13 @@ fn main() {
         for mut board in boards.iter_mut() {
             if let Some((x, y)) = board.0.get(&call) {
                 board.1[*x] += 1;
-                board.1[5+*y] += 1;
-                if board.1[5+*y] == 5 || board.1[*x] == 5 {
-                    let tot: usize = board.0.iter()
+                board.1[5 + *y] += 1;
+                if board.1[5 + *y] == 5 || board.1[*x] == 5 {
+                    let tot: usize = board
+                        .0
+                        .iter()
                         .map(|(&c, _)| c)
-                        .filter(|c|  !called.contains(c))
+                        .filter(|c| !called.contains(c))
                         .sum();
                     dbg!(tot * call);
 
