@@ -10,13 +10,13 @@ fn main() {
     });
     let mut grid = [[0u8; 1000]; 1000];
     for line in lines {
-        if line.0.0 == line.1.0 {
-            for y in inc_range(line.0.1, line.1.1) {
-                grid[y][line.0.0] += 1;
+        if line.0 .0 == line.1 .0 {
+            for y in inc_range(line.0 .1, line.1 .1) {
+                grid[y][line.0 .0] += 1;
             }
-        } else if line.0.1 == line.1.1 {
-            for x in inc_range(line.0.0, line.1.0) {
-                grid[line.0.1][x] += 1;
+        } else if line.0 .1 == line.1 .1 {
+            for x in inc_range(line.0 .0, line.1 .0) {
+                grid[line.0 .1][x] += 1;
             }
         } else {
             for point in point_range(line.0, line.1) {
@@ -24,11 +24,7 @@ fn main() {
             }
         }
     }
-    let count = grid
-        .iter()
-        .flatten()
-        .filter(|&x| *x >= 2)
-        .count();
+    let count = grid.iter().flatten().filter(|&x| *x >= 2).count();
     dbg!(count);
 }
 
