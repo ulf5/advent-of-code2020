@@ -1,4 +1,7 @@
-use std::collections::{BTreeMap, HashSet};
+use std::{
+    cmp::min,
+    collections::{BTreeMap, HashSet},
+};
 
 fn main() {
     let mut acc: BTreeMap<usize, usize> = BTreeMap::new();
@@ -11,10 +14,7 @@ fn main() {
         .for_each(|(i, (_, r))| {
             let cur = *acc.get(&i).unwrap_or(&0) + 1;
             let score = score_game(r);
-            for n in i + 1..=i + score {
-                if n >= lines.len() {
-                    break;
-                }
+            for n in i + 1..=min(i + score, lines.len()) {
                 *acc.entry(n).or_insert(0) += cur;
             }
         });
